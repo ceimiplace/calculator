@@ -78,13 +78,25 @@
       //start
       let numbers = document.querySelectorAll(".number");
       numbers.forEach((element) => {
-        element.addEventListener("click", () => {
-          if (calculator.a === null) {
-            calculator.a = calculator.value[element.textContent];
-            result.textContent = calculator.a;
-          } else if (calculator.b === null) {
-            calculator.b = calculator.value[element.textContent];
-            result.textContent = result.textContent + calculator.b;
+        element.addEventListener("click", (e) => {
+          if (calculator.switch === false) {
+            if (calculator.a === "") {
+              calculator.a = element.textContent;
+              result.textContent = calculator.a;
+            } else {
+              calculator.a = calculator.a + element.textContent;
+              result.textContent = calculator.a;
+            }
+          } else if (calculator.switch === true) {
+            if (calculator.b === "") {
+              calculator.b = element.textContent;
+              result.textContent = result.textContent + calculator.b;
+            } else {
+              calculator.b = calculator.b + element.textContent;
+              result.textContent = result.textContent + element.textContent;
+
+              console.log(e);
+            }
           }
         });
       });
@@ -96,14 +108,15 @@
         element.addEventListener("click", () => {
           calculator.operation = element.classList[1];
           result.textContent = result.textContent + element.textContent;
+          calculator.switch = true;
         });
       });
       //stop
       //making reset button
       let deleteBtn = document.querySelector(".delete");
       deleteBtn.addEventListener("click", () => {
-        calculator.a = null;
-        calculator.b = null;
+        calculator.a = "";
+        calculator.b = "";
         result.textContent = "";
       });
       //stop
@@ -115,54 +128,46 @@
       });
 
       let calculator = {
-        a: null,
-        b: null,
-        value: {
-          0: 0,
-          1: 1,
-          2: 2,
-          3: 3,
-          4: 4,
-          5: 5,
-          6: 6,
-          7: 7,
-          8: 8,
-          9: 9,
-        },
+        a: "",
+        b: "",
+
         addition() {
-          return this.a + this.b;
+          return +this.a + +this.b;
         },
         multiply() {
-          return this.a * this.b;
+          return +this.a * +this.b;
         },
         subtraction() {
-          return this.a - this.b;
+          return +this.a - +this.b;
         },
         division() {
-          return this.a / this.b;
+          return +this.a / +this.b;
         },
         equal() {
           switch (this.operation) {
             case "addition":
-              this.a = this.addition();
+              this.a = this.addition().toString();
+
               break;
             case "multiply":
-              this.a = this.multiply();
+              this.a = this.multiply().toString();
               break;
             case "division":
-              this.a = this.division();
+              this.a = this.division().toString();
               break;
             case "subtraction":
-              this.a = this.subtraction();
+              this.a = this.subtraction().toString();
               break;
           }
-
+          this.operation = null;
           result.textContent = this.a;
-          this.b = null;
+
+          this.b = "";
+          this.switch = false;
         },
 
         operation: null,
-        result: 0,
+        switch: false,
       };
     </script>
   </body>
