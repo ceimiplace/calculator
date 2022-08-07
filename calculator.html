@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        background: linear-gradient(white, pink, white);
+        height: 100vh;
+      }
+      .container {
+        width: 360px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(7, 1fr);
+        gap: 20px;
+        margin-inline: auto;
+        margin-top: 100px;
+        text-align: center;
+        border: 1px solid grey;
+        padding: 10px;
+        background-color: antiquewhite;
+      }
+      .container div {
+        border: 1px solid black;
+        background-color: white;
+      }
+      .container div:hover {
+        cursor: pointer;
+      }
+      .result {
+        grid-row: 1/3;
+        grid-column: 1/5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="result"></div>
+      <div>%</div>
+      <div>CE</div>
+      <div class="delete">C</div>
+      <div>DEL</div>
+      <div>1/X</div>
+      <div>X**2</div>
+      <div>ROOT</div>
+      <div class="twoOpp division">/</div>
+      <div class="number">7</div>
+      <div class="number">8</div>
+      <div class="number">9</div>
+      <div class="twoOpp multiply">*</div>
+      <div class="number">4</div>
+      <div class="number">5</div>
+      <div class="number">6</div>
+      <div class="twoOpp subtraction">-</div>
+      <div class="number">1</div>
+      <div class="number">2</div>
+      <div class="number">3</div>
+      <div class="twoOpp addition">+</div>
+      <div>-/+</div>
+      <div class="number">0</div>
+      <div>.</div>
+      <div class="equal">=</div>
+    </div>
+    <script>
+      /* selecting number 0,1,2,3,etc...*/
+      //start
+      let numbers = document.querySelectorAll(".number");
+      numbers.forEach((element) => {
+        element.addEventListener("click", () => {
+          if (calculator.a === null) {
+            calculator.a = calculator.value[element.textContent];
+            result.textContent = calculator.a;
+          } else if (calculator.b === null) {
+            calculator.b = calculator.value[element.textContent];
+            result.textContent = result.textContent + calculator.b;
+          }
+        });
+      });
+      //stop
+
+      //selecting +,-,/,** and addiing event listener to change claculator.operator
+      let twoOpperators = document.querySelectorAll(".twoOpp");
+      twoOpperators.forEach((element) => {
+        element.addEventListener("click", () => {
+          calculator.operation = element.classList[1];
+          result.textContent = result.textContent + element.textContent;
+        });
+      });
+      //stop
+      //making reset button
+      let deleteBtn = document.querySelector(".delete");
+      deleteBtn.addEventListener("click", () => {
+        calculator.a = null;
+        calculator.b = null;
+        result.textContent = "";
+      });
+      //stop
+      let result = document.querySelector(".result");
+
+      let equal = document.querySelector(".equal");
+      equal.addEventListener("click", () => {
+        calculator.equal();
+      });
+
+      let calculator = {
+        a: null,
+        b: null,
+        value: {
+          0: 0,
+          1: 1,
+          2: 2,
+          3: 3,
+          4: 4,
+          5: 5,
+          6: 6,
+          7: 7,
+          8: 8,
+          9: 9,
+        },
+        addition() {
+          return this.a + this.b;
+        },
+        multiply() {
+          return this.a * this.b;
+        },
+        subtraction() {
+          return this.a - this.b;
+        },
+        division() {
+          return this.a / this.b;
+        },
+        equal() {
+          switch (this.operation) {
+            case "addition":
+              this.a = this.addition();
+              break;
+            case "multiply":
+              this.a = this.multiply();
+              break;
+            case "division":
+              this.a = this.division();
+              break;
+            case "subtraction":
+              this.a = this.subtraction();
+              break;
+          }
+
+          result.textContent = this.a;
+          this.b = null;
+        },
+
+        operation: null,
+        result: 0,
+      };
+    </script>
+  </body>
+</html>
