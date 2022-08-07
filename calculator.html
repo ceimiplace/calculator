@@ -106,6 +106,9 @@
       let twoOpperators = document.querySelectorAll(".twoOpp");
       twoOpperators.forEach((element) => {
         element.addEventListener("click", () => {
+          if (calculator.b !== "") {
+            calculator.equal();
+          }
           calculator.operation = element.classList[1];
           result.textContent = result.textContent + element.textContent;
           calculator.switch = true;
